@@ -1,0 +1,45 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TodoList.ViewModels"
+             x:Class="TodoList.MainPage"
+             x:Name="MainPageElement">
+
+    <!-- Привязываем контекст страницы к TaskViewModel -->
+    <ContentPage.BindingContext>
+        <local:TaskViewModel />
+    </ContentPage.BindingContext>
+
+    <!-- Основной контейнер с отступами -->
+    <StackLayout Padding="10">
+        <!-- Поле для ввода новой задачи с привязкой к свойству NewTaskTitle -->
+        <Entry Placeholder="Введите задачу"
+               Text="{Binding NewTaskTitle}" />
+
+        <!-- Кнопка для добавления задачи, привязана к команде AddTaskCommand -->
+        <Button Text="Добавить задачу"
+                Command="{Binding AddTaskCommand}" />
+
+        <!-- Список задач, привязанный к свойству Tasks -->
+        <ListView ItemsSource="{Binding Tasks}"
+                  Margin="0,10,0,0">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <!-- Макет для отображения задачи -->
+                        <StackLayout Orientation="Horizontal"
+                                     Spacing="10">
+                            <!-- Флажок для отметки выполнения задачи, привязан к свойству IsCompleted -->
+                            <CheckBox IsChecked="{Binding IsCompleted, Mode=TwoWay}" />
+                            <!-- Заголовок задачи -->
+                            <Label Text="{Binding Title}" />
+                            <!-- Кнопка для удаления задачи, привязана к команде RemoveTaskCommand -->
+                            <Button Text="Удалить" 
+                                    Command="{Binding BindingContext.RemoveTaskCommand, Source={x:Reference Name=MainPageElement}}" 
+                                    CommandParameter="{Binding}" />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+</ContentPage>
